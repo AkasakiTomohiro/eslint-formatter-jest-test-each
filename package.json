@@ -21,7 +21,6 @@
     "test": "ts-node ./test/custom-rule.spec.ts"
   },
   "dependencies": {
-    "astring": "^1.8.4",
     "meaw": "^7.0.0"
   },
   "devDependencies": {
