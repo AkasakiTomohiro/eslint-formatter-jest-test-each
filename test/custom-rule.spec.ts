@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   }
 });
 
-ruleTester.run('test-each-formatter', format, {
+ruleTester.run('jest-test-each-formatting/format', format, {
   valid: [{
     filename: './test/sample/sample.spec.js',
     code    : fs.readFileSync('./test/sample/sample.spec.js', 'utf-8'),
