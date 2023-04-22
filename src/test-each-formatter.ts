@@ -1,21 +1,47 @@
 import { Rule } from 'eslint';
 import { computeWidth } from 'meaw';
 
+type Options = {
+  lineBreakStyle: 'unix' | 'windows';
+  indent : number;
+}
+const defaultOptions: Options = {
+  lineBreakStyle: 'unix',
+  indent        : 4
+};
+
 export const format: Rule.RuleModule = {
   meta: { 
     fixable : 'code',
     messages: {
       'TestEachArgumentMismatch'     : 'The variable specified in the header of test.each does not match the number of arguments inserted.',
       'TestEachArgumentWidthMismatch': 'Element widths are not aligned.'
-    }
+    },
+    schema: [
+      {
+        type      : 'object',
+        properties: {
+          lineBreakStyle: {
+            enum   : ['unix', 'windows'],
+            default: 'unix'
+          },
+          indent: {
+            type   : 'number',
+            default: 4
+          }
+        }
+      }
+    ]
   },
   create: (context: Rule.RuleContext): Rule.RuleListener => {
     if(!context.getFilename().match(/.*\.(test|spec).(js|jsx|ts|tsx)$/)) {
       return {};
     }
     const sourceCode = context.getSourceCode();
-
-    const newLine = '\r\n';
+    
+    const options: Options = context.options.length === 0 ? defaultOptions : context.options[0] ?? defaultOptions;
+    const eol = options.lineBreakStyle === 'windows' ? '\r\n' : '\n';
+    const indent = options.indent;
     return {
       TaggedTemplateExpression: (node) => {
 
@@ -59,47 +85,33 @@ export const format: Rule.RuleModule = {
         const maxLengthArray = [...header.map(m => computeWidth(m)), ...argument.map(m => computeWidth(m) + 3)]
 
           // ${header.length}個ずつに分割
-          .reduce((p, c, i) => chunk(p, c, i, header.length), [] as number[][])
+          .reduce<number[][]>((p, c, i) => mapFnChunk(p, c, i, header.length), [])
 
           // 2重配列のIndex番号ごとの最大値を取得
-          .reduce((p, c, i) => {
+          .reduce<number[]>((p, c, i) => {
             if(i === 0) {
               return c;
             }
-            p = p.map((m, i) => Math.max(m, c[i]));
-            return p;
-          }, [] as number[]);
-
-        // 1インデントにおける半角スペースの数を取得
-        const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
-        const indent = sourceCode.getText()
-          .split(newLine)
-
-          // 先頭にある空白の個数を取得
-          .map(m => m.length - m.trimStart().length)
-
-          // 0は除外し、重複を削除
-          .filter((f, i, s) => f !== 0 && i === s.indexOf(f))
-
-          // 最大公約数を取得
-          .reduce(gcd);
+            return p.map((m, i) => Math.max(m, c[i]));
+          }, []);
 
         // ベースインデントの個数を取得
-        const startString = sourceCode.getText().split(newLine)[loc.start.line - 1];
+        const startString = sourceCode.getText().split(eol)[loc.start.line - 1];
         const multiple = (startString.length - startString.trimStart().length) / indent;
 
-        const startStringMatchHeader = source.split(newLine)[0].indexOf(header[0]);
+        const startStringMatchHeader = source.split(eol)[0].indexOf(header[0]);
         let newNodeText = startStringMatchHeader === -1 ? 
-          source.split(newLine)[0] + newLine : source.split(newLine)[0].slice(0, startStringMatchHeader) + newLine;
+          source.split(eol)[0] + eol :
+          source.split(eol)[0].slice(0, startStringMatchHeader) + eol;
 
         // ヘッダーを追加
-        newNodeText += ' '.repeat(indent * (multiple + 1)) + header.map((m, i, s) => mapFn(m, i, s, maxLengthArray[i])).join(' | ') + newLine;
+        newNodeText += ' '.repeat(indent * (multiple + 1)) + header.map((m, i, s) => mapFn(m, i, s, maxLengthArray[i])).join(' | ') + eol;
 
         // 引数を追加
         newNodeText += argument
-          .reduce((p, c, i) => chunk(p, c, i, header.length), [] as string[][])
+          .reduce<string[][]>((p, c, i) => mapFnChunk(p, c, i, header.length), [])
           .map(m => ' '.repeat(indent * (multiple + 1)) + m.map((m, i, s) => mapFn(`\${${m}}`, i, s, maxLengthArray[i])).join(' | '))
-          .join(newLine) + newLine;
+          .join(eol) + eol;
 
         // エンドインデントを追加
         newNodeText += ' '.repeat(indent * multiple) + '`';
@@ -137,7 +149,7 @@ function mapFn(element: string, index: number, array: string[], maxLength: numbe
 /**
  * reduceで利用する指定した分割数で配列を分割する関数
  */
-function chunk<T>(p: T[][], c: T, i: number, chunkSize: number): T[][] {
+function mapFnChunk<T>(p: T[][], c: T, i: number, chunkSize: number): T[][] {
   const chunkIndex = Math.floor(i / chunkSize);
   if(!p[chunkIndex]) {
     p[chunkIndex] = [];
