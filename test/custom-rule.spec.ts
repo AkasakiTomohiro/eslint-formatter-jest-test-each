@@ -1,7 +1,7 @@
 import { RuleTester } from 'eslint';
 import fs from 'fs';
 
-import { format } from '../src/test-each-formatter';
+import { format } from '../src/format';
 
 const ruleTester = new RuleTester({
   parserOptions: {

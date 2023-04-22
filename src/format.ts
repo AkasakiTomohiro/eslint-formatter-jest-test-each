@@ -34,14 +34,12 @@ export const format: Rule.RuleModule = {
     ]
   },
   create: (context: Rule.RuleContext): Rule.RuleListener => {
-    if(!context.getFilename().match(/.*\.(test|spec).(js|jsx|ts|tsx)$/)) {
-      return {};
-    }
     const sourceCode = context.getSourceCode();
     
     const options: Options = context.options.length === 0 ? defaultOptions : context.options[0] ?? defaultOptions;
     const eol = options.lineBreakStyle === 'windows' ? '\r\n' : '\n';
     const indent = options.indent;
+    
     return {
       TaggedTemplateExpression: (node) => {
 
