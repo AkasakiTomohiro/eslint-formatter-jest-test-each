@@ -1,20 +1,24 @@
 {
-  "name": "eslint-formatter-jest-test-each",
+  "name": "eslint-plugin-jest-test-each-formatting",
   "version": "1.0.0",
   "main": "./lib/index.js",
   "files": [
-    "./lib/**/*"
+    "./lib/*"
   ],
-  "repository": "https://github.com/AkasakiTomohiro/eslint-formatter-jest-test-each.git",
+  "repository": "https://github.com/AkasakiTomohiro/eslint-plugin-jest-test-each-formatting.git",
   "author": "t.akasaki <t.akasaki.csharp@gmail.com>",
   "license": "MIT",
+  "description": "ESLint rules for formatting jest test.each",
   "keywords": [
-    "jest",
     "eslint",
-    "formatter",
+    "eslintplugin",
+    "eslint-plugin",
+    "format",
+    "formatting",
+    "padding",
+    "jest",
     "test",
-    "each",
-    "plugin"
+    "each"
   ],
   "scripts": {
     "build": "yarn tsc",
