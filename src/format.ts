@@ -1,3 +1,5 @@
+import os from 'os';
+
 import { Rule } from 'eslint';
 import { computeWidth } from 'meaw';
 
@@ -57,7 +59,7 @@ export const format: Rule.RuleModule = {
 
         // テンプレート文字列を取得
         const [headerArray, ...templateString] = node.quasi.quasis
-          .map(m => m.value.raw.replace(/ /g, '').replace(/\n/g, ''))
+          .map(m => m.value.raw.replace(/ /g, '').replace(/\r/g, '').replace(/\n/g, ''))
           .filter(f => f !== '');
         const header = headerArray.split('|');
 
