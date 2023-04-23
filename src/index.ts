@@ -1,4 +1,5 @@
-import { format, defaultOptions } from './format';
+import { existVariableInTestName } from './exist-variable-in-test-name';
+import { format } from './format';
 
 export const rules = {
 
@@ -22,7 +23,8 @@ export const configs = {
           '**/__tests__/*'
         ],
         rules: { 
-          'jest-test-each-formatting/format': ['warn', defaultOptions]
+          'jest-test-each-formatting/format'                     : 'warn',
+          'jest-test-each-formatting/exist-variable-in-test-name': 'warn'
         }
       }
     ]
@@ -39,7 +41,8 @@ export const configs = {
           '**/__tests__/*'
         ],
         rules: { 
-          'jest-test-each-formatting/format': ['error', defaultOptions]
+          'jest-test-each-formatting/format'                     : 'error',
+          'jest-test-each-formatting/exist-variable-in-test-name': 'error'
         }
       }
     ]
