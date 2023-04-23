@@ -11,8 +11,8 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('jest-test-each-formatting/format', format, {
   valid: [{
-    filename: './test/sample/sample.spec.js',
-    code    : fs.readFileSync('./test/sample/sample.spec.js', 'utf-8'),
+    filename: './test/sample/format/sample.spec.js',
+    code    : fs.readFileSync('./test/sample/format/sample.spec.js', 'utf-8'),
     options : [{
       lineBreakStyle: 'windows',
       indent        : 2
@@ -20,8 +20,8 @@ ruleTester.run('jest-test-each-formatting/format', format, {
   }],
   invalid: [
     {
-      filename: './test/sample/sample-error1.spec.js',
-      code    : fs.readFileSync('./test/sample/sample-error1.spec.js', 'utf-8'),
+      filename: './test/sample/format/sample-error1.spec.js',
+      code    : fs.readFileSync('./test/sample/format/sample-error1.spec.js', 'utf-8'),
       errors  : [{
         messageId: 'TestEachArgumentMismatch'
       }],
@@ -31,8 +31,8 @@ ruleTester.run('jest-test-each-formatting/format', format, {
       }]
     },
     {
-      filename: './test/sample/sample-error2.spec.js',
-      code    : fs.readFileSync('./test/sample/sample-error2.spec.js', 'utf-8'),
+      filename: './test/sample/format/sample-error2.spec.js',
+      code    : fs.readFileSync('./test/sample/format/sample-error2.spec.js', 'utf-8'),
       errors  : [{
         messageId: 'TestEachArgumentMismatch'
       }],
@@ -42,36 +42,36 @@ ruleTester.run('jest-test-each-formatting/format', format, {
       }]
     },
     {
-      filename: './test/sample/sample-error3.spec.js',
-      code    : fs.readFileSync('./test/sample/sample-error3.spec.js', 'utf-8'),
+      filename: './test/sample/format/sample-error3.spec.js',
+      code    : fs.readFileSync('./test/sample/format/sample-error3.spec.js', 'utf-8'),
       errors  : [{
         messageId: 'TestEachArgumentWidthMismatch'
       }],
-      output : fs.readFileSync('./test/sample/sample.spec.js', 'utf-8'),
+      output : fs.readFileSync('./test/sample/format/sample.spec.js', 'utf-8'),
       options: [{
         lineBreakStyle: 'windows',
         indent        : 2
       }]
     },
     {
-      filename: './test/sample/sample-error4.spec.js',
-      code    : fs.readFileSync('./test/sample/sample-error4.spec.js', 'utf-8'),
+      filename: './test/sample/format/sample-error4.spec.js',
+      code    : fs.readFileSync('./test/sample/format/sample-error4.spec.js', 'utf-8'),
       errors  : [{
         messageId: 'TestEachArgumentWidthMismatch'
       }],
-      output : fs.readFileSync('./test/sample/sample.spec.js', 'utf-8'),
+      output : fs.readFileSync('./test/sample/format/sample.spec.js', 'utf-8'),
       options: [{
         lineBreakStyle: 'windows',
         indent        : 2
       }]
     },
     {
-      filename: './test/sample/sample-error5.spec.js',
-      code    : fs.readFileSync('./test/sample/sample-error5.spec.js', 'utf-8'),
+      filename: './test/sample/format/sample-error5.spec.js',
+      code    : fs.readFileSync('./test/sample/format/sample-error5.spec.js', 'utf-8'),
       errors  : [{
         messageId: 'TestEachArgumentWidthMismatch'
       }],
-      output : fs.readFileSync('./test/sample/sample.spec.js', 'utf-8'),
+      output : fs.readFileSync('./test/sample/format/sample.spec.js', 'utf-8'),
       options: [{
         lineBreakStyle: 'windows',
         indent        : 2
