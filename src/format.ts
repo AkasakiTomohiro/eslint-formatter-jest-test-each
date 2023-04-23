@@ -36,9 +36,9 @@ export const format: Rule.RuleModule = {
   create: (context: Rule.RuleContext): Rule.RuleListener => {
     const sourceCode = context.getSourceCode();
     
-    const options: Options = context.options.length === 0 ? defaultOptions : context.options[0] ?? defaultOptions;
-    const eol = options.lineBreakStyle === 'windows' ? '\r\n' : '\n';
-    const indent = options.indent;
+    const options: Partial<Options> = context.options.length === 0 ? defaultOptions : context.options[0] ?? defaultOptions;
+    const eol = (options.lineBreakStyle ?? defaultOptions.lineBreakStyle) === 'windows' ? '\r\n' : '\n';
+    const indent = options.indent ?? defaultOptions.indent;
     
     return {
       TaggedTemplateExpression: (node) => {
