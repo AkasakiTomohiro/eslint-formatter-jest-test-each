@@ -13,19 +13,6 @@ export const existVariableInTestName: Rule.RuleModule = {
     
     return {
       TaggedTemplateExpression: (node) => {
-
-        /*
-         * if(
-         *   node.parent.type !== 'CallExpression' ||
-         *   node.parent.parent.type !== 'ExpressionStatement' ||
-         *   node.parent.parent.expression.type !== 'CallExpression'
-         * ) {
-         *   return;
-         * }
-         * console.log(node.parent.parent.expression.);
-         */
-
-        // return;
         
         // rangeとlocがなければ終了;
         const { range, loc } = node;
