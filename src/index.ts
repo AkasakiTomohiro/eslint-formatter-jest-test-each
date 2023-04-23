@@ -3,7 +3,10 @@ import { format, defaultOptions } from './format';
 export const rules = {
 
   // テンプレートブロックの幅を揃えるルール
-  'format': format
+  'format': format,
+
+  // テスト名に利用している変数がTaggedTemplateに存在するかチェックするルール
+  'exist-variable-in-test-name': existVariableInTestName
 };
 
 export const configs = {
