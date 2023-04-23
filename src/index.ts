@@ -1,10 +1,12 @@
-import { format } from './format';
+import { format, defaultOptions } from './format';
 
 export const rules = {
-  'jest-test-each-formatting/format': format
+
+  // テンプレートブロックの幅を揃えるルール
+  'format': format
 };
 
-export const config = {
+export const configs = {
   recommended: {
     plugins  : ['jest-test-each-formatting'],
     overrides: [
@@ -17,10 +19,7 @@ export const config = {
           '**/__tests__/*'
         ],
         rules: { 
-          'jest-test-each-formatting/format': ['warn', {
-            lineBreakStyle: 'unix',
-            indent        : 4
-          }]
+          'jest-test-each-formatting/format': ['warn', defaultOptions]
         }
       }
     ]
@@ -37,10 +36,7 @@ export const config = {
           '**/__tests__/*'
         ],
         rules: { 
-          'jest-test-each-formatting/format': ['error', {
-            lineBreakStyle: 'unix',
-            indent        : 4
-          }]
+          'jest-test-each-formatting/format': ['error', defaultOptions]
         }
       }
     ]

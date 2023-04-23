@@ -3,10 +3,10 @@ import { computeWidth } from 'meaw';
 
 type Options = {
   lineBreakStyle: 'unix' | 'windows';
-  indent : number;
+  indent: number;
 }
-const defaultOptions: Options = {
-  lineBreakStyle: 'unix',
+export const defaultOptions: Options = {
+  lineBreakStyle: os.EOL === '\n' ? 'unix' : 'windows',
   indent        : 4
 };
 
