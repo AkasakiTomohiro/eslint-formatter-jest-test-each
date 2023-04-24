@@ -45,7 +45,7 @@ export const existVariableInTestFunction: Rule.RuleModule = {
         // 使用している引数が、テンプレート文字列に存在するかチェック
         const isNotExist = properties.map(m => header.includes(m)).includes(false);
         if(isNotExist) {
-          context.report({ node: parent.arguments[0], messageId: 'UndefinedVariables' });
+          context.report({ node: parent.arguments[1], messageId: 'UndefinedVariables' });
         }
       }
     };
