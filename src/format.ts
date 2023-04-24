@@ -7,10 +7,19 @@ import { getTestEachVariables } from './util';
 type Options = {
   lineBreakStyle: 'unix' | 'windows';
   indent: number;
+  eastAsianWidth: {
+    N ?: number; // Neutral
+    Na?: number; // Narrow
+    W ?: number; // Wide
+    F ?: number; // Full Width
+    H ?: number; // Half Width
+    A ?: number; // Ambiguous
+  }
 }
 export const defaultOptions: Options = {
   lineBreakStyle: os.EOL === '\n' ? 'unix' : 'windows',
-  indent        : 4
+  indent        : 4,
+  eastAsianWidth: {}
 };
 
 export const format: Rule.RuleModule = {
@@ -25,12 +34,26 @@ export const format: Rule.RuleModule = {
         type      : 'object',
         properties: {
           lineBreakStyle: {
-            enum   : ['unix', 'windows'],
-            default: 'unix'
+            enum    : ['unix', 'windows'],
+            default : defaultOptions.lineBreakStyle, 
+            optional: true
           },
           indent: {
-            type   : 'number',
-            default: 4
+            type    : 'number',
+            default : 4, 
+            optional: true
+          },
+          eastAsianWidth: {
+            type      : 'object',
+            properties: {
+              N : { type: 'number', description: 'Neutral', optional: true },
+              Na: { type: 'number', description: 'Narrow', optional: true },
+              W : { type: 'number', description: 'Wide', optional: true },
+              F : { type: 'number', description: 'Full Width', optional: true },
+              H : { type: 'number', description: 'Half Width', optional: true },
+              A : { type: 'number', description: 'Ambiguous', optional: true }
+            }, 
+            optional: true
           }
         }
       }
@@ -42,6 +65,10 @@ export const format: Rule.RuleModule = {
     const options: Partial<Options> = context.options.length === 0 ? defaultOptions : context.options[0] ?? defaultOptions;
     const eol = (options.lineBreakStyle ?? defaultOptions.lineBreakStyle) === 'windows' ? '\r\n' : '\n';
     const indent = options.indent ?? defaultOptions.indent;
+    const eastAsianWidth = {
+      ...defaultOptions.eastAsianWidth,
+      ...(options.eastAsianWidth ?? {})
+    };
     
     return {
       TaggedTemplateExpression: (node) => {
@@ -70,8 +97,38 @@ export const format: Rule.RuleModule = {
           return;
         }
 
+        // reduceで利用する指定した分割数で配列を分割する関数
+        const mapFnChunk = <T>(p: T[][], c: T, i: number, chunkSize: number): T[][] => {
+          const chunkIndex = Math.floor(i / chunkSize);
+          if(!p[chunkIndex]) {
+            p[chunkIndex] = [];
+          }
+          p[chunkIndex].push(c);
+          return p;
+        };
+
+        /**
+         * 文字列とインデックスと元の配列を引数に取り、文字列を返す関数
+         * @param element   ベースの文字列
+         * @param index     ベースの文字列が格納されているインデックス
+         * @param array     ベースの文字列が格納されている配列
+         * @param maxLength インデックス番号に対応する最大文字数
+         * @returns 
+         */
+        const mapFn = (element: string, index: number, array: string[], maxLength: number): string => {
+          if(index === 0) {
+            return element + ' '.repeat(maxLength - computeWidth(element, eastAsianWidth));
+          } else if(index === array.length - 1) {
+            return element;
+          }
+          return element + ' '.repeat(maxLength - computeWidth(element, eastAsianWidth));
+        };
+
         // 表のカラムごとの最大文字数を取得
-        const maxLengthArray = [...header.map(m => computeWidth(m)), ...argument.map(m => computeWidth(m) + 3)]
+        const maxLengthArray = [
+          ...header.map(m => computeWidth(m, eastAsianWidth)), 
+          ...argument.map(m => computeWidth(m, eastAsianWidth) + 3)
+        ]
 
           // ${header.length}個ずつに分割
           .reduce<number[][]>((p, c, i) => mapFnChunk(p, c, i, header.length), [])
@@ -117,32 +174,3 @@ export const format: Rule.RuleModule = {
     };
   }
 };
-
-/**
- * 文字列とインデックスと元の配列を引数に取り、文字列を返す関数
- * @param element   ベースの文字列
- * @param index     ベースの文字列が格納されているインデックス
- * @param array     ベースの文字列が格納されている配列
- * @param maxLength インデックス番号に対応する最大文字数
- * @returns 
- */
-function mapFn(element: string, index: number, array: string[], maxLength: number): string {
-  if(index === 0) {
-    return element + ' '.repeat(maxLength - computeWidth(element));
-  } else if(index === array.length - 1) {
-    return element;
-  }
-  return element + ' '.repeat(maxLength - computeWidth(element));
-}
-
-/**
- * reduceで利用する指定した分割数で配列を分割する関数
- */
-function mapFnChunk<T>(p: T[][], c: T, i: number, chunkSize: number): T[][] {
-  const chunkIndex = Math.floor(i / chunkSize);
-  if(!p[chunkIndex]) {
-    p[chunkIndex] = [];
-  }
-  p[chunkIndex].push(c);
-  return p;
-}

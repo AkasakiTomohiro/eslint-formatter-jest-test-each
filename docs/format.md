@@ -50,3 +50,22 @@ describe('sample', () => {
   If you are enforcing the number of indentations by specifying [indent](https://eslint.org/docs/latest/rules/indent), please set this setting.
 
   default: 4
+
+- eastAsianWidth
+
+  [Unicode East Asian Width (EAW)](http://www.unicode.org/reports/tr11/).
+  Computes the width of a string based on the [EAW properties](http://www.unicode.org/reports/tr11/) of the characters. 
+  By default, characters with property Wide (W) or Fullwidth (F) are treated as wide (= 2) and others are as narrow (= 1).
+
+  ```json
+  {
+    eastAsianWidth: {
+      N : 1,
+      Na: 1,
+      W : 2,
+      F : 2,
+      H : 1,
+      A : 1
+    }
+  }
+  ```
