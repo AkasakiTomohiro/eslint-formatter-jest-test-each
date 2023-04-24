@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
       "akasaki",
+      "eslintplugin",
       "meaw",
+      "quasis",
       "voltarc"
     ],
     "eslint.format.enable": true,
