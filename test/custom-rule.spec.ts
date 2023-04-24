@@ -1,6 +1,7 @@
 import { RuleTester } from 'eslint';
 import fs from 'fs';
 
+import { existVariableInTestFunction } from '../src/exist-variable-in-test-function';
 import { existVariableInTestName } from '../src/exist-variable-in-test-name';
 import { format } from '../src/format';
 
@@ -92,6 +93,24 @@ ruleTester.run('jest-test-each-formatting/exist-variable-in-test-name', existVar
     {
       filename: './test/sample/exist-variable-in-test-name/sample-error1.spec.js',
       code    : fs.readFileSync('./test/sample/exist-variable-in-test-name/sample-error1.spec.js', 'utf-8'),
+      errors  : [{
+        messageId: 'UndefinedVariables'
+      }]
+    }
+  ]
+});
+
+ruleTester.run('jest-test-each-formatting/exist-variable-in-test-function', existVariableInTestFunction, {
+  valid: [
+    {
+      filename: './test/sample/exist-variable-in-test-function/sample.spec.js',
+      code    : fs.readFileSync('./test/sample/exist-variable-in-test-function/sample.spec.js', 'utf-8')
+    }
+  ],
+  invalid: [
+    {
+      filename: './test/sample/exist-variable-in-test-function/sample-error1.spec.js',
+      code    : fs.readFileSync('./test/sample/exist-variable-in-test-function/sample-error1.spec.js', 'utf-8'),
       errors  : [{
         messageId: 'UndefinedVariables'
       }]

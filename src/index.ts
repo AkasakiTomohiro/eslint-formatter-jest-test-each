@@ -1,3 +1,4 @@
+import { existVariableInTestFunction } from './exist-variable-in-test-function';
 import { existVariableInTestName } from './exist-variable-in-test-name';
 import { format } from './format';
 
@@ -7,7 +8,10 @@ export const rules = {
   'format': format,
 
   // テスト名に利用している変数がTaggedTemplateに存在するかチェックするルール
-  'exist-variable-in-test-name': existVariableInTestName
+  'exist-variable-in-test-name': existVariableInTestName,
+
+  // テストの関数の引数に利用している変数がTaggedTemplateに存在するかチェックするルール
+  'exist-variable-in-test-function': existVariableInTestFunction
 };
 
 export const configs = {
@@ -23,8 +27,9 @@ export const configs = {
           '**/__tests__/*'
         ],
         rules: { 
-          'jest-test-each-formatting/format'                     : 'warn',
-          'jest-test-each-formatting/exist-variable-in-test-name': 'warn'
+          'jest-test-each-formatting/format'                         : 'warn',
+          'jest-test-each-formatting/exist-variable-in-test-name'    : 'warn',
+          'jest-test-each-formatting/exist-variable-in-test-function': 'warn'
         }
       }
     ]
@@ -41,8 +46,9 @@ export const configs = {
           '**/__tests__/*'
         ],
         rules: { 
-          'jest-test-each-formatting/format'                     : 'error',
-          'jest-test-each-formatting/exist-variable-in-test-name': 'error'
+          'jest-test-each-formatting/format'                         : 'error',
+          'jest-test-each-formatting/exist-variable-in-test-name'    : 'error',
+          'jest-test-each-formatting/exist-variable-in-test-function': 'error'
         }
       }
     ]
