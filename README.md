@@ -27,10 +27,8 @@ Next, configure the rules in the rules section.
 ```json
 {
   "rules": {
-    // デフォルトの設定
     "jest-test-each-formatting/format": ["error", {
-      "lineBreakStyle": "unix",   // 改行コードの種類を規定
-      "indent"        : 4         // インデントの数
+      "indent"        : 4
     }]
   }
 }
@@ -57,3 +55,5 @@ It also supports a `strict` setting to enable strict rules.
 ## Rule Details
 
 - [format](docs/format.md)
+- [exist-variable-in-test-name](docs/exist-variable-in-test-name.md)
+- [exist-variable-in-test-function](docs/exist-variable-in-test-function.md)
