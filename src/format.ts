@@ -2,6 +2,7 @@ import os from 'os';
 
 import { Rule } from 'eslint';
 import { computeWidth } from 'meaw';
+import { getTestEachVariables } from './util';
 
 type Options = {
   lineBreakStyle: 'unix' | 'windows';
@@ -45,26 +46,14 @@ export const format: Rule.RuleModule = {
     return {
       TaggedTemplateExpression: (node) => {
 
-        // rangeとlocがなければ終了
-        const { range, loc } = node;
-        if(range === undefined || loc === null || loc === undefined) {
+        const results = getTestEachVariables(node, sourceCode);
+        if(results === undefined) {
           return;
         }
-
-        // test.eachでなければ終了
-        const source = sourceCode.getText(node);
-        if(!source.match(/^test\.each.*/)) {
-          return;
-        }
-
-        // テンプレート文字列を取得
-        const [headerArray, ...templateString] = node.quasi.quasis
-          .map(m => m.value.raw.replace(/ /g, '').replace(/\r/g, '').replace(/\n/g, ''))
-          .filter(f => f !== '');
-        const header = headerArray.split('|');
+        const { range, loc, source, header, splitCharCount } = results;
 
         // テンプレートに指定している引数の区切り文字数がヘッダーの引く1つ少ない数の倍数でなければ終了
-        if(templateString.length % (header.length - 1) !== 0) {
+        if(splitCharCount % (header.length - 1) !== 0) {
           context.report({ node, messageId: 'TestEachArgumentMismatch' });
           return;
         }

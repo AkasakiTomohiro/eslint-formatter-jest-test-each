@@ -1,5 +1,6 @@
 
 import { Rule } from 'eslint';
+import { getTestEachVariables } from './util';
 
 export const existVariableInTestName: Rule.RuleModule = {
   meta: { 
@@ -14,36 +15,28 @@ export const existVariableInTestName: Rule.RuleModule = {
     return {
       TaggedTemplateExpression: (node) => {
         
-        // rangeとlocがなければ終了;
-        const { range, loc } = node;
-        if(range === undefined || loc === null || loc === undefined) {
+        const results = getTestEachVariables(node, sourceCode);
+        if(results === undefined) {
           return;
         }
+        const { header } = results;
 
-        // test.eachでなければ終了
-        const source = sourceCode.getText(node);
-        if(!source.match(/^test\.each.*/)) {
-          return;
-        }
-
-        // テンプレート文字列を取得
-        const [headerArray] = node.quasi.quasis
-          .map(m => m.value.raw.replace(/ /g, '').replace(/\r/g, '').replace(/\n/g, ''))
-          .filter(f => f !== '');
-        const header = headerArray.split('|');
-        console.log(header);
+        // 親の引数に第1引数にLiteralがなければ終了
         const parent = node.parent;
-        if(parent.type !== 'CallExpression') {
+        if(parent.type !== 'CallExpression' || parent.arguments.length !== 2) {
           return;
         }
         if(parent.arguments[0].type !== 'Literal') {
           return;
         }
+
+        // テスト名から、使用している引数の一覧取得
         const testName = parent.arguments[0].value as string;
         const matchVariables = testName.match(/\$\w*/g)?.map(m => m.replace('$', '')) ?? [] as string[];
-        console.log(testName, matchVariables);
-        const isExist = matchVariables.map(m => header.includes(m)).includes(false);
-        if(isExist) {
+
+        // 使用している引数が、テンプレート文字列に存在するかチェック
+        const isNotExist = matchVariables.map(m => header.includes(m)).includes(false);
+        if(isNotExist) {
           context.report({ node: parent.arguments[0], messageId: 'UndefinedVariables' });
         }
       }

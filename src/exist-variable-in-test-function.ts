@@ -1,5 +1,6 @@
 
 import { Rule } from 'eslint';
+import { getTestEachVariables } from './util';
 
 export const existVariableInTestFunction: Rule.RuleModule = {
   meta: { 
@@ -14,18 +15,12 @@ export const existVariableInTestFunction: Rule.RuleModule = {
     return {
       TaggedTemplateExpression: (node) => {
         
-        // rangeとlocがなければ終了;
-        const { range, loc } = node;
-        if(range === undefined || loc === null || loc === undefined) {
+        const results = getTestEachVariables(node, sourceCode);
+        if(results === undefined) {
           return;
         }
-
-        // test.eachでなければ終了
-        const source = sourceCode.getText(node);
-        if(!source.match(/^test\.each.*/)) {
-          return;
-        }
-
+        const { header } = results;
+      
         // 親の引数に第1引数にLiteralがなければ終了
         const parent = node.parent;
         if(parent.type !== 'CallExpression' || parent.arguments.length !== 2) {
@@ -39,11 +34,7 @@ export const existVariableInTestFunction: Rule.RuleModule = {
           return;
         }
 
-        // テンプレート文字列を取得
-        const [headerArray] = node.quasi.quasis
-          .map(m => m.value.raw.replace(/ /g, '').replace(/\r/g, '').replace(/\n/g, ''))
-          .filter(f => f !== '');
-        const header = headerArray.split('|');
+        // テスト関数の引数一覧を取得
         const properties = parent.arguments[1].params[0].properties.map(m => {
           if(m.type === 'Property' && m.key.type === 'Identifier') {
             return m.key.name;
@@ -51,8 +42,9 @@ export const existVariableInTestFunction: Rule.RuleModule = {
           return undefined;
         }).filter(f => f !== undefined) as string[];
 
-        const isExist = properties.map(m => header.includes(m)).includes(false);
-        if(isExist) {
+        // 使用している引数が、テンプレート文字列に存在するかチェック
+        const isNotExist = properties.map(m => header.includes(m)).includes(false);
+        if(isNotExist) {
           context.report({ node: parent.arguments[0], messageId: 'UndefinedVariables' });
         }
       }
