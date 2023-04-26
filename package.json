@@ -47,7 +47,7 @@
     "eslint": ">=0.8.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": "^14.21.3 || >=16.0.0"
   },
   "volta": {
     "extends": ".voltarc.json"
