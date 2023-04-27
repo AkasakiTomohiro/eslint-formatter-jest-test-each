@@ -4,6 +4,7 @@ type Node = Parameters<Exclude<Rule.NodeListener['TaggedTemplateExpression'], un
 
 const matchList = [
   'test.concurrent.only.each',
+  'test.concurrent.skip.each',
   'test.each',
   'test.failing.each',
   'test.only.each',
