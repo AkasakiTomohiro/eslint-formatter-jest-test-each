@@ -6,6 +6,20 @@
 [![downloads](https://img.shields.io/npm/dm/eslint-plugin-jest-test-each-formatting.svg?style=flat-square)](http://npm-stat.com/charts.html?package=eslint-plugin-jest-test-each-formatting&from=2023-04-01)
 [![MIT License](https://img.shields.io/npm/l/eslint-plugin-jest-test-each-formatting.svg?style=flat-square)](https://github.com/AkasakiTomohiro/eslint-plugin-jest-test-each-formatting/blob/master/LICENSE.md)
 
+## Support Jest *.each
+
+- describe.each
+- describe.only.each
+- describe.skip.each
+- test.concurrent.each
+- test.concurrent.failing.each
+- test.concurrent.only.each
+- test.concurrent.skip.each
+- test.each
+- test.failing.each
+- test.only.each
+- test.skip.each
+
 ## Installation
 
 1. npm install -D eslint 
