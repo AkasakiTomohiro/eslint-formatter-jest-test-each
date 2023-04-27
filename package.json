@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-jest-test-each-formatting",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "lib/index.js",
   "module": "src/index.ts",
   "repository": "https://github.com/AkasakiTomohiro/eslint-plugin-jest-test-each-formatting.git",
@@ -47,7 +47,7 @@
     "eslint": ">=0.8.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": "^14.21.3 || >=16.0.0"
   },
   "volta": {
     "extends": ".voltarc.json"
