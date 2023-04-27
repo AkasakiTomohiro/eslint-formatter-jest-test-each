@@ -3,6 +3,7 @@ import { Rule, SourceCode } from 'eslint';
 type Node = Parameters<Exclude<Rule.NodeListener['TaggedTemplateExpression'], undefined>>[0];
 
 const matchList = [
+  'describe.each',
   'test.concurrent.each',
   'test.concurrent.only.each',
   'test.concurrent.skip.each',

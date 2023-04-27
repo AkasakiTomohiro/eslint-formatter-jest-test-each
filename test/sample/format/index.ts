@@ -1,3 +1,4 @@
+import { describeEach } from './describe-each';
 import { testConcurrentEach } from './test-concurrent-each';
 import { testConcurrentOnlyEach } from './test-concurrent-only-each';
 import { testConcurrentSkipEach } from './test-concurrent-skip-each';
@@ -8,6 +9,7 @@ import { testSkipEach } from './test-skip-each';
 
 export const formatTestData = {
   valid: [
+    ...describeEach.valid,
     ...testConcurrentEach.valid,
     ...testConcurrentOnlyEach.valid,
     ...testConcurrentSkipEach.valid,
@@ -17,6 +19,7 @@ export const formatTestData = {
     ...testSkipEach.valid
   ],
   invalid: [
+    ...describeEach.invalid,
     ...testConcurrentEach.invalid,
     ...testConcurrentOnlyEach.invalid,
     ...testConcurrentSkipEach.invalid,
