@@ -7,6 +7,7 @@ const matchList = [
   'describe.only.each',
   'describe.skip.each',
   'test.concurrent.each',
+  'test.concurrent.failing.each',
   'test.concurrent.only.each',
   'test.concurrent.skip.each',
   'test.each',

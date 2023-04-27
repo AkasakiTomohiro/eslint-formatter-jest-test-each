@@ -2,6 +2,7 @@ import { describeEach } from './describe-each';
 import { describeOnlyEach } from './describe-only-each';
 import { describeSkipEach } from './describe-skip-each';
 import { testConcurrentEach } from './test-concurrent-each';
+import { testConcurrentFailingEach } from './test-concurrent-failing-each';
 import { testConcurrentOnlyEach } from './test-concurrent-only-each';
 import { testConcurrentSkipEach } from './test-concurrent-skip-each';
 import { testEach } from './test-each';
@@ -15,6 +16,7 @@ export const existVariableInTestFunctionTestData = {
     ...describeOnlyEach.valid,
     ...describeSkipEach.valid,
     ...testConcurrentEach.valid,
+    ...testConcurrentFailingEach.valid,
     ...testConcurrentOnlyEach.valid,
     ...testConcurrentSkipEach.valid,
     ...testEach.valid,
@@ -27,6 +29,7 @@ export const existVariableInTestFunctionTestData = {
     ...describeOnlyEach.invalid,
     ...describeSkipEach.invalid,
     ...testConcurrentEach.invalid,
+    ...testConcurrentFailingEach.invalid,
     ...testConcurrentOnlyEach.invalid,
     ...testConcurrentSkipEach.invalid,
     ...testEach.invalid,
