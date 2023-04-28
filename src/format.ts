@@ -80,7 +80,7 @@ export const format: Rule.RuleModule = {
         const { range, loc, source, header, splitCharCount } = results;
 
         // テンプレートに指定している引数の区切り文字数がヘッダーの引く1つ少ない数の倍数でなければ終了
-        if(splitCharCount % (header.length - 1) !== 0) {
+        if(1 < header.length && (splitCharCount % (header.length - 1) !== 0)) {
           context.report({ node, messageId: 'TestEachArgumentMismatch' });
           return;
         }
@@ -116,12 +116,13 @@ export const format: Rule.RuleModule = {
          * @returns 
          */
         const mapFn = (element: string, index: number, array: string[], maxLength: number): string => {
-          if(index === 0) {
-            return element + ' '.repeat(maxLength - computeWidth(element, eastAsianWidth));
-          } else if(index === array.length - 1) {
+          if(index === array.length - 1) {
             return element;
+          } else if(index === 0) {
+            return element + ' '.repeat(maxLength - computeWidth(element, eastAsianWidth));
+          } else {
+            return element + ' '.repeat(maxLength - computeWidth(element, eastAsianWidth));
           }
-          return element + ' '.repeat(maxLength - computeWidth(element, eastAsianWidth));
         };
 
         // 表のカラムごとの最大文字数を取得
