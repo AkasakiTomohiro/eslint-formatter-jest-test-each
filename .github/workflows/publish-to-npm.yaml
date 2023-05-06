@@ -34,22 +34,3 @@ jobs:
         run : npm publish --access=public
         env :
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-  publish-to-gpr:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Use Node.js And Setup .npmrc
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          registry-url: 'https://npm.pkg.github.com'
-          always-auth : true
-      - name: Can Publish
-        run : npx can-npm-publish --verbose
-      - name: Install
-        run : yarn
-      - name: Build
-        run : yarn build
-      - name: Publish
-        run : npm publish --access=public
