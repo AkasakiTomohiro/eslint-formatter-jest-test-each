@@ -13,7 +13,15 @@ const matchList = [
   'test.each',
   'test.failing.each',
   'test.only.each',
-  'test.skip.each'
+  'test.skip.each',
+  'it.concurrent.each',
+  'it.concurrent.failing.each',
+  'it.concurrent.only.each',
+  'it.concurrent.skip.each',
+  'it.each',
+  'it.failing.each',
+  'it.only.each',
+  'it.skip.each'
 ] as const;
 type MatchString = typeof matchList[number];
 
